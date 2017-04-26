@@ -6,22 +6,20 @@ function [filterResponses] = extractFilterResponses(img, filterBank)
 % Outputs:
 %   filterResponses:    a W x H x N*3 matrix of filter responses
 
-    I = RGB2Lab(im2double(img));
+    I = img;
+    if (size(I,3) == 1)
+        I = repmat(I,[1,1,3]);
+    end
+        
+    I = RGB2Lab(im2double(I));
 
     W = size(I, 1);
     H = size(I, 2);
     N = length(filterBank);
     
     filterResponses = zeros(W, H, 3*N);
-    %filterResponses = zeros(W, H, 3, N);
     
     for i = 1:N
-        if (size(I, 3) == 3)
-            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(I, filterBank{i});
-            %filterResponses(:, :, :,  i) = imfilter(I, filterBank{i});
-        else
-            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(repmat(I,[1,1,3]), filterBank{i});
-            %filterResponses(:, :, :,  i) = imfilter(repmat(I,[1,1,3]), filterBank{i});
-        end
+        filterResponses(:, :,  3*i-2 : 3*i) = imfilter(I, filterBank{i});
     end
 end
