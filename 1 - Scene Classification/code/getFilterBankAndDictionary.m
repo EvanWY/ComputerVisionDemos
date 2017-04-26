@@ -19,11 +19,15 @@ function [filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
     for i = 1 : length(imPaths)
         fr = extractFilterResponses(imread(imPaths{i}), filterBank);
         for j = 1 : ALPHA
-            vec = shiftdim(fr(randperm(size(fr, 1)), randperm(size(fr, 2)), :), 1);
-            filter_responses(length(imPaths) * (i-1) + j) = vec;
+            vec = shiftdim(fr(randperm(size(fr, 1), 1), randperm(size(fr, 2), 1), :), 1);
+            %DEBUG
+            fprintf('building filter_responses, ( %d / %d )\r', ALPHA * (i-1) + j, ALPHA * length(imPaths));
+            %DEBUG END
+            filter_responses(ALPHA * (i-1) + j, :) = vec;
         end
     end
     
+    fprintf('\nstart kmeans\n');
     [~, dictionary] = kmeans(filter_responses, K, 'EmptyAction','drop');
 
 end
