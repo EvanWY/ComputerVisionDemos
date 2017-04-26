@@ -10,5 +10,20 @@ function [filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
     filterBank  = createFilterBank();
 
     % TODO Implement your code here
+    
+    ALPHA = 130;
+    K = 207;
+    
+    filter_responses = zeros(ALPHA * length(imPaths), 3 * length(filterBank));
+    
+    for i = 1 : length(imPaths)
+        fr = extractFilterResponses(imread(imPaths{i}), filterBank);
+        for j = 1 : ALPHA
+            vec = shiftdim(fr(randperm(size(fr, 1)), randperm(size(fr, 2)), :), 1);
+            filter_responses(length(imPaths) * (i-1) + j) = vec;
+        end
+    end
+    
+    [~, dictionary] = kmeans(filter_responses, K, 'EmptyAction','drop');
 
 end

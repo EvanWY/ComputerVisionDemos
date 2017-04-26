@@ -10,17 +10,17 @@ function [filterResponses] = extractFilterResponses(img, filterBank)
 
     W = size(I, 1);
     H = size(I, 2);
-    N = size(filterBank, 1);
+    N = length(filterBank);
     
     filterResponses = zeros(W, H, 3*N);
     %filterResponses = zeros(W, H, 3, N);
     
     for i = 1:N
         if (size(I, 3) == 3)
-            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(I, filterBank(:, :, i));
+            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(I, filterBank{i});
             %filterResponses(:, :, :,  i) = imfilter(I, filterBank{i});
         else
-            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(repmat(I,[1,1,3]), filterBank(:, :, i));
+            filterResponses(:, :,  3*i-2 : 3*i) = imfilter(repmat(I,[1,1,3]), filterBank{i});
             %filterResponses(:, :, :,  i) = imfilter(repmat(I,[1,1,3]), filterBank{i});
         end
     end
