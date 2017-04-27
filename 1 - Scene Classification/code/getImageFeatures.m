@@ -6,8 +6,6 @@ function [h] = getImageFeatures(wordMap, dictionarySize)
 % Output:
 %   h: vector of histogram of visual words of size dictionarySize (l1-normalized, ie. sum(h(:)) == 1)
 
-	% TODO Implement your code here
-    
     h = zeros(dictionarySize, 1);
     sum = 0;
     
