@@ -34,5 +34,7 @@ function [h] = getImageFeaturesSPM(layerNum, wordMap, dictionarySize)
             end
         end
         
+        h = reshape(h, [], 1);
+        
     end
 end
