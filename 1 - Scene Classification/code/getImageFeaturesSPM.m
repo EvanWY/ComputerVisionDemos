@@ -18,23 +18,23 @@ function [h] = getImageFeaturesSPM(layerNum, wordMap, dictionarySize)
             indexMat = getIndexMatrixForImageFeaturesSPM(1, H, 1, W, level);
             for idx = 1 : 4^level
                 vec = indexMat(idx, :);
-                h(:, offset+idx) = getImageFeatures(wordMap(vec(1, 1) : vec(1, 2), vec(1, 3) : vec(1, 4)), dictionarySize) / 32;
+                map = wordMap(vec(1, 1) : vec(1, 2), vec(1, 3) : vec(1, 4));
+                h(:, offset+idx) = getImageFeatures(map, dictionarySize) / 32;
             end
         end
         
         if level == 1
             for idx = 1 : 4^level
-                h(:, offset+idx) = 0.5 * (h(:, offset2 + (4 * idx) - 3) + h(:, offset2 + (4 * idx) - 2) + h(:, offset2 + (4 * idx) - 1) + h(:, offset2 + (4 * idx) - 0)) / 4;
+                h(:, offset+idx) = 0.5 * (h(:, offset2 + (4 * idx) - 3) + h(:, offset2 + (4 * idx) - 2) + h(:, offset2 + (4 * idx) - 1) + h(:, offset2 + (4 * idx) - 0));
             end
         end
         
         if level == 0
             for idx = 1 : 4^level
-                h(:, offset+idx) = (h(:, offset2 + (4 * idx) - 3) + h(:, offset2 + (4 * idx) - 2) + h(:, offset2 + (4 * idx) - 1) + h(:, offset2 + (4 * idx) - 0)) / 4;
+                h(:, offset+idx) = (h(:, offset2 + (4 * idx) - 3) + h(:, offset2 + (4 * idx) - 2) + h(:, offset2 + (4 * idx) - 1) + h(:, offset2 + (4 * idx) - 0));
             end
         end
-        
-        h = reshape(h, [], 1);
-        
     end
+    
+    h = reshape(h, [], 1);
 end
