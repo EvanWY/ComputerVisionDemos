@@ -7,5 +7,6 @@ function histInter = distanceToSet(wordHist, histograms)
 % 	histInter: histogram intersection similarity between wordHist and each training sample as a 1 × T vector
 
 	histInter = sum(min(wordHist, histograms));
+    %histInter = - pdist2(wordHist', histograms')';
 	
 end
