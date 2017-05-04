@@ -7,3 +7,4 @@ function [DoGPyramid, DoGLevels] = createDoGPyramid(GaussianPyramid, levels)
 %               outputs
 % DoG Pyramid - size (size(im), numel(levels) - 1) matrix of the DoG pyramid
 %               created by differencing the Gaussian Pyramid input
+
