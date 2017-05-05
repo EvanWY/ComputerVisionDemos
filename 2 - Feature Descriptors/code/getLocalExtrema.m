@@ -15,3 +15,21 @@ function locsDoG = getLocalExtrema(DoGPyramid, DoGLevels, ...
 % OUTPUTS
 % locsDoG - N x 3 matrix where the DoG pyramid achieves a local extrema in both
 %           scale and space, and also satisfies the two thresholds.
+
+l = circshift(DoGPyramid, [1, 0, 0]);
+r = circshift(DoGPyramid, [-1, 0, 0]);
+f = circshift(DoGPyramid, [0, 1, 0]);
+b = circshift(DoGPyramid, [0, -1, 0]);
+lf = circshift(DoGPyramid, [1, 1, 0]);
+rf = circshift(DoGPyramid, [-1, 1, 0]);
+lb = circshift(DoGPyramid, [1, -1, 0]);
+rb = circshift(DoGPyramid, [-1, -1, 0]);
+down = circshift(DoGPyramid, [0, 0, 1]);
+up = circshift(DoGPyramid, [0, 0, -1]);
+
+
+[locsDoG(1,:,:)] = find(DoGPyramid > th_contrast & PrincipalCurvature < th_r ...
+& DoGPyramid > l & DoGPyramid > r & DoGPyramid > f & DoGPyramid > b ...
+& DoGPyramid > lf & DoGPyramid > rf & DoGPyramid > lb & DoGPyramid > rb ...
+& DoGPyramid > down & DoGPyramid > up);
+
