@@ -11,3 +11,7 @@ function [compareA, compareB] = makeTestPattern(patchWidth, nbits)
 % OUTPUTS
 % compareA and compareB - LINEAR indices into the patchWidth x patchWidth image 
 %                         patch and are each nbits x 1 vectors. 
+    compareA = ceil(rand(nbits, 1) * patchWidth * patchWidth);
+    compareB = ceil(rand(nbits, 1) * patchWidth * patchWidth);
+
+end
