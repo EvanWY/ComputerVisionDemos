@@ -32,4 +32,4 @@ up = circshift(DoGPyramid, [0, 0, -1]);
 & DoGPyramid > lf & DoGPyramid > rf & DoGPyramid > lb & DoGPyramid > rb ...
 & DoGPyramid > down & DoGPyramid > up));
 
-locsDoG = [X'; Y'; Z'];
+locsDoG = [Y X Z];

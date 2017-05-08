@@ -9,9 +9,7 @@ function [locs, desc] = briefLite(im)
 %		 m is the number of valid descriptors in the image and will vary
 % 		 n is the number of bits for the BRIEF descriptor
 
-    load('testPattern.mat');
-
     [locsDoG, GaussianPyramid] = DoGdetector(im, 1, sqrt(2), [-1,0,1,2,3,4], 0.03, 12);
-    [locs,desc] = computeBrief(im, GaussianPyramid, locsDoG, sqrt(2), [-1,0,1,2,3,4], compareA, compareB);
+    [locs,desc] = computeBrief(im, GaussianPyramid, locsDoG, sqrt(2), levels, compareA, compareB)
 
 end

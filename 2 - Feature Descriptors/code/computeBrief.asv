@@ -13,20 +13,7 @@ function [locs,desc] = computeBrief(im, GaussianPyramid, locsDoG, k, ...
 %		 of keypoints and the third column is the pyramid level of the keypoints
 % desc - an m x n bits matrix of stacked BRIEF descriptors. m is the number of 
 %        valid descriptors in the image and will vary
-    locs = [];
-    desc = [];
-    for idx = 1:size(locsDoG, 1)
-        x = locsDoG(idx, 2);
-        y = locsDoG(idx, 1);
-        d = floor(9 / 2);
-        
-        try
-            patch = reshape(im(x - d : x + d, y - d : y + d), [], 1);
-            locs = [locs; locsDoG(idx, :)];
-            desc = [desc; (patch(compareB) > patch(compareA))'];
-        catch e
-        end
-            
-    end
+
+    
 
 end
