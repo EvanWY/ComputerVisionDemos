@@ -32,5 +32,7 @@ function [bestH] = ransacH(matches, locs1, locs2, nIter, tol)
             bestH = H2to1;
         end
     end
+    
+    maxInliers
 
 end

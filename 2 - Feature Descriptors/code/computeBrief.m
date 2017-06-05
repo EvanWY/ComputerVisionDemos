@@ -20,11 +20,19 @@ function [locs,desc] = computeBrief(im, GaussianPyramid, locsDoG, k, ...
         y = locsDoG(idx, 1);
         d = floor(9 / 2);
         
+        patch = [];
+        
+        flag = 1;
+        
         try
             patch = reshape(im(x - d : x + d, y - d : y + d), [], 1);
+        catch e
+            flag = 0;
+        end
+        
+        if flag == 1
             locs = [locs; locsDoG(idx, :)];
             desc = [desc; (patch(compareB) > patch(compareA))'];
-        catch e
         end
             
     end

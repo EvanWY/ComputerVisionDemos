@@ -1,3 +1,0 @@
-[locs1, desc1] = briefLite(im1);
-[locs2, desc2] = briefLite(im2);
-

@@ -21,7 +21,8 @@ function [] = plotMatches(im1, im2, matches, locs1, locs2)
     
     axis equal;
     hold on;
-    for i = 1:length(matches)
+    %for i = 1:length(matches)
+    for i = 1:10
         p1 = locs1(matches(i,1),:);
         p2 = locs2(matches(i,2),:); 
         line([p1(1) size(im1,2)+p2(1)],[p1(2),p2(2)], 'Color','r','LineWidth',1); 

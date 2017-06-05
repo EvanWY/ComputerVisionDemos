@@ -20,8 +20,10 @@ function H2to1 = computeH(p1,p2)
         A(2*i, :)   = [0,   0,   0,  x1,  y1,   1,   -x1*y2,   -y1*y2,   -y2];
     end
     
-    h = A\zeros(2*N, 1);
+    h = null(A);
     
-    H2to1 = reshape(h, 3, 3)';
+    H2to1 = reshape(h(:,1), 3, 3)';
+    
+    H2to1 = H2to1 / H2to1(3,3);
     
 end
