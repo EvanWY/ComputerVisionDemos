@@ -11,9 +11,7 @@ function [ im3 ] = generatePanoroma( im1, im2 )
 
     H = ransacH(matches, locs1, locs2, 10000, 20);
     
-    im3 = imageStitching(im2, im1, H);
-    
-    imshow(im3);
+    im3 = imageStitching_noClip(im2, im1, H);
 
 end
 
