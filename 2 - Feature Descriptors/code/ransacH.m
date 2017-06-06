@@ -17,6 +17,9 @@ function [bestH] = ransacH(matches, locs1, locs2, nIter, tol)
         p2 = locs2(idxm(:, 2), 1:2)';
         H2to1 = computeH(p1, p2);
         
+        
+        p1 = locs1(matches(:, 1), 1:2)';
+        p2 = locs2(matches(:, 2), 1:2)';
         p1(3,:) = 1;
         p2(3,:) = 1;
         

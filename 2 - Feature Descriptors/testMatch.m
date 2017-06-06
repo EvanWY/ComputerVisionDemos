@@ -3,6 +3,6 @@
 [locs1, desc1] = briefLite(rgb2gray(im1));
 [locs2, desc2] = briefLite(rgb2gray(im2));
 
-[matches] = briefMatch(desc1, desc2, 0.98);
+[matches] = briefMatch(desc1, desc2, 0.8);
 
 plotMatches(im1, im2, matches, locs1, locs2);
