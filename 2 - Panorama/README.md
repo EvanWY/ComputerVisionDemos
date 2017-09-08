@@ -1,18 +1,18 @@
 ### BRIEF Panoramas Generator - Computer Vision Project
-![image](2%20-%20Panorama/panoramas_merge.png)
+![image](panoramas_merge.png)
 
 ## Steps
 
 By using BRIEF Feature Point Algorithm, I found out the feature point to the images.
 
-![image](2%20-%20Panorama/keypoints_without_edge_supression.png)  ![image](2%20-%20Panorama/keypoints_without_edge_supression3.png)
+![image](keypoints_without_edge_supression.png)  ![image](keypoints_without_edge_supression3.png)
 
 Applying Edge Supression
 
-![image](2%20-%20Panorama/keypoints.png)  ![image](2%20-%20Panorama/keypoints3.png)
+![image](keypoints.png)  ![image](keypoints3.png)
 
 Feature Point Matching
 
-![image](2%20-%20Panorama/feature%20point%20matching.png)
+![image](feature%20point%20matching.png)
 
 
