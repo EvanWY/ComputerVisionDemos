@@ -8,62 +8,45 @@ function [u,v] = LucasKanadeInverseCompositional(It, It1, rect)
     [GTx, GTy] = imgradientxy(T);
     [M,N] = size(T);
     
-    SDI = zeros(M,N,6);
-    SDI(:,:,1) = repmat([1:N]/N,M,1) .* GTx;
-    SDI(:,:,2) = repmat([1:N]/N,M,1) .* GTy;
-    SDI(:,:,3) = repmat(([1:M]/M)',1,N) .* GTx;
-    SDI(:,:,4) = repmat(([1:M]/M)',1,N) .* GTy;
-    SDI(:,:,5) = ones(M,N)*0.5 .* GTx;
-    SDI(:,:,6) = ones(M,N)*0.5 .* GTy;
+    SDI = zeros(M,N,2);
+    SDI(:,:,1) = ones(M,N)*0.5 .* GTy;
+    SDI(:,:,2) = ones(M,N)*0.5 .* GTx;
     
-    H = zeros(6,6);
-    for i = 1:6
-        for j = 1:6
+    H = zeros(2,2);
+    for i = 1:2
+        for j = 1:2
             H(i,j) = sum(sum(SDI(:,:,i).*SDI(:,:,j)));
         end
     end
     
     InvH = inv(H);
     
-    p = [0;0;0;0;0;0];
+    p = [0;0];
     
     
-    for ii = 1:12
+    for ii = 1:12000
         %%%%%%%
-        I = zeros(M,N);
-        WarpMat = inv([p(1)+1, p(3), p(5); p(2), p(4)+1, p(6); 0, 0, 1]);
-        for i = 1:M
-            for j = 1:N
-                vec = WarpMat * [i; j; 1];
-                I(i,j) = interp2(It1, vec(2)+rect(1),vec(1)+rect(2));
-            end
-        end
+        %Xq = repmat([1:M]' + (p(1)+rect(1)), 1, N);
+        %Yq= repmat([1:N] + (p(2)+rect(2)), M, 1);
+        Xq = repmat([1:M]' + (p(1)+rect(2)), 1, N);
+        Yq= repmat([1:N] + (p(2)+rect(1)), M, 1);
+        I = interp2(im2double(It1), Yq, Xq);
         
-        subplot(3,4,ii),imshow(I/255)
+        imshow(I)
 
-        ErrorImage = I/255 - im2double(T);
+        ErrorImage = I - im2double(T);
         %imshow(ErrorImage*10+0.5);
 
-        SD = [0;0;0;0;0;0];
-        for i = 1:6
+        SD = [0;0];
+        for i = 1:2
             SD(i) = sum(sum(SDI(:,:,i) .* ErrorImage));
         end
 
-        dp = InvH * SD * 100;
+        dp = InvH * SD;
 
-        dp = [-dp(1)-dp(1)*dp(4)+dp(2)*dp(3); 
-            -dp(2); 
-            -dp(3); 
-            -dp(4)-dp(1)*dp(4)+dp(2)*dp(3);
-            -dp(5)-dp(4)*dp(5)+dp(3)*dp(6);
-            -dp(6)-dp(1)*dp(6)+dp(2)*dp(5)] / ((1+dp(1))*(1+dp(4)) - dp(2)*dp(3));
+        p = p - dp*1000;
         
-        p = [p(1)+dp(1)+p(1)*dp(1)+p(3)*dp(2);
-            p(2)+dp(2)+p(2)*dp(1)+p(4)*dp(2);
-            p(3)+dp(3)+p(1)*dp(3)+p(3)*dp(4);
-            p(4)+dp(4)+p(2)*dp(3)+p(4)*dp(4);
-            p(5)+dp(5)+p(1)*dp(5)+p(3)*dp(6);
-            p(6)+dp(6)+p(2)*dp(5)+p(4)*dp(6);]
+        [dp, p, [ii;0]]
     end
     
 end
