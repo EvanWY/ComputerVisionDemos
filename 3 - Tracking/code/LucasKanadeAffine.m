@@ -18,8 +18,8 @@ function Mat = LucasKanadeAffine(It, It1)
     SDI(:,:,2) = repmat([1:N]/N,M,1) .* GTy;
     SDI(:,:,3) = repmat(([1:M]/M)',1,N) .* GTx;
     SDI(:,:,4) = repmat(([1:M]/M)',1,N) .* GTy;
-    SDI(:,:,5) = ones(M,N) .* GTx;
-    SDI(:,:,6) = ones(M,N) .* GTy;
+    SDI(:,:,5) = ones(M,N) * 0.5 .* GTx;
+    SDI(:,:,6) = ones(M,N) * 0.5 .* GTy;
     
     H = zeros(6,6);
     for i = 1:6
@@ -36,12 +36,12 @@ function Mat = LucasKanadeAffine(It, It1)
     for ii = 1:1200
         %subplot(4,4,ii)
         
-        WarpMat = Mp; 
+        WarpMat = inv(Mp); 
         XYq = ones(3,M,N);
-        XYq(1,:,:) = repmat([1:M]'/M, 1, N);
-        XYq(2,:,:)= repmat([1:N]/N, M, 1);
+        XYq(1,:,:)= repmat([1:N]/N, M, 1);
+        XYq(2,:,:) = repmat([1:M]'/M, 1, N);
         XYq = reshape(WarpMat * reshape(XYq, 3, []), 3, M, N);
-        I = interp2(It1, reshape(XYq(2,:,:)*N,M,N), reshape(XYq(1,:,:)*M,M,N), 'linear', -1);
+        I = interp2(It1, reshape(XYq(1,:,:)*N,M,N), reshape(XYq(2,:,:)*M,M,N), 'linear', -1);
 
 
         ErrorImage = (I - T) .* (I>-0.5);
@@ -55,31 +55,15 @@ function Mat = LucasKanadeAffine(It, It1)
             SD(i) = sum(sum(SDI(:,:,i) .* ErrorImage));
         end
 
-        dp = InvH * SD * 0.1;
+        dp = InvH * SD * -0.03;
 
-         dp = [-dp(1)-dp(1)*dp(4)+dp(2)*dp(3); 
-             -dp(2); 
-             -dp(3); 
-             -dp(4)-dp(1)*dp(4)+dp(2)*dp(3);
-             -dp(5)-dp(4)*dp(5)+dp(3)*dp(6);
-             -dp(6)-dp(1)*dp(6)+dp(2)*dp(5)] / ((1+dp(1))*(1+dp(4)) - dp(2)*dp(3));
-         
-         dp
-         
-         p = [p(1)+dp(1)+p(1)*dp(1)+p(3)*dp(2);
-             p(2)+dp(2)+p(2)*dp(1)+p(4)*dp(2);
-             p(3)+dp(3)+p(1)*dp(3)+p(3)*dp(4);
-             p(4)+dp(4)+p(2)*dp(3)+p(4)*dp(4);
-             p(5)+dp(5)+p(1)*dp(5)+p(3)*dp(6);
-             p(6)+dp(6)+p(2)*dp(5)+p(4)*dp(6);];
-
-        %Mdp = [dp(1)+1, dp(3), dp(5); dp(2), dp(4)+1, dp(6); 0, 0, 1];
-        %Mp = inv(Mdp * Mp);
-        Mp = [p(1)+1, p(3), p(5); p(2), p(4)+1, p(6); 0, 0, 1];
-        %Mp = [1, 0, p(5); 0, 1, p(6); 0, 0, 1];
+        Mdp = [dp(1)+1, dp(3), dp(5); dp(2), dp(4)+1, dp(6); 0, 0, 1];
+        Mp = inv(Mdp) * Mp;
+        
+        if (sum(abs(dp)) < 0.002)
+            break
+        end
+        sum(abs(dp))
     end
-    
-    subplot(4,4,13),imshow(It)
-    subplot(4,4,14),imshow(It1)
     
 end
